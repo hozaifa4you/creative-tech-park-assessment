@@ -1,5 +1,5 @@
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-    <div class="container mx-auto px-4 py-6 md:py-8">
+<section class="bg-gradient-to-r from-blue-600 to-blue-800/50 text-white">
+    <div class="container max-w-screen-lg px-4 py-6 md:py-8">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-2/3 mb-4 md:mb-0 text-center md:text-left">
                 <h2 class="text-xl md:text-3xl font-bold mb-2 md:mb-3">Black Friday Sale</h2>

@@ -7,11 +7,11 @@
 <header class="bg-white shadow-sm sticky top-0 z-50">
     <!-- Top Header - Hidden on mobile -->
     <div class="border-b border-gray-100 hidden md:block">
-        <div class="container mx-auto px-4 py-2">
+        <div class="container px-4 py-2">
             <div class="flex justify-between items-center text-xs text-gray-600">
                 <div class="flex space-x-4">
-                    <span>📞 1-800-TECH-MART</span>
-                    <span>📧 support@techmart.com</span>
+                    <span><i class="fa-solid fa-phone"></i> 1-800-TECH-MART</span>
+                    <span><i class="fa-regular fa-envelope"></i> support@techmart.com</span>
                 </div>
                 <div class="flex space-x-4">
                     <a href="#" class="hover:text-accent">Track Order</a>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Main Header -->
-    <div class="container mx-auto px-4 py-3">
+    <div class="container px-4 py-3">
         <div class="flex justify-between items-center">
             <!-- Logo -->
             <div class="flex items-center">
@@ -33,10 +33,11 @@
 
             <!-- Search - Desktop -->
             <div class="hidden lg:flex flex-1 max-w-2xl mx-8">
-                <div class="relative w-full">
+                <div class="relative w-full flex items-center gap-0">
                     <input type="text" placeholder="Search for products..."
                         class="w-full px-4 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
-                    <button class="bg-accent text-white px-4 py-2 rounded-r-md hover:bg-blue-600 text-sm">
+                    <button
+                        class="bg-accent border border-accent text-white px-4 py-2 rounded-r-md hover:bg-blue-600 text-sm">
                         Search
                     </button>
                 </div>
