@@ -36,7 +36,7 @@ class AdminLoginRequest extends FormRequest
    public function roles()
    {
       $user = Auth::user();
-      if ($user->role->value !== Role::Admin) {
+      if ($user->role->value !== Role::Admin->value) {
          Auth::logout();
          throw ValidationException::withMessages([
             'email' => 'You do not have permission to access this area.',
