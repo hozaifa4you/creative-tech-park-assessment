@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +12,10 @@ class User extends Authenticatable implements MustVerifyEmail
 {
    /** @use HasFactory<\Database\Factories\UserFactory> */
    use HasFactory, Notifiable;
+
+   public const SUPER_ADMIN = "superAdmin";
+   public const ADMIN = "admin";
+   public const USER = "user";
 
    /**
     * The attributes that are mass assignable.
@@ -44,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
       return [
          'email_verified_at' => 'datetime',
          'password' => 'hashed',
-         'role' => 'enum',
+         'role' => Role::class,
       ];
    }
 }

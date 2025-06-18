@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enum\Role;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+class AdminLoginRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.
@@ -24,12 +25,23 @@ class LoginRequest extends FormRequest
     *
     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
     */
-   public function rules(): array
+   public function rules()
    {
       return [
          'email' => ['required', 'string', 'email'],
          'password' => ['required', 'string'],
       ];
+   }
+
+   public function roles()
+   {
+      $user = Auth::user();
+      if ($user->role->value !== Role::Admin) {
+         Auth::logout();
+         throw ValidationException::withMessages([
+            'email' => 'You do not have permission to access this area.',
+         ]);
+      }
    }
 
    /**
@@ -48,6 +60,8 @@ class LoginRequest extends FormRequest
             'email' => trans('auth.failed'),
          ]);
       }
+
+      $this->roles();
 
       RateLimiter::clear($this->throttleKey());
    }
