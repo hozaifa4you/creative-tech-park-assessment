@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+   use HasFactory;
+
    protected $fillable = [
       "name",
       "slug",
@@ -19,9 +22,8 @@ class Product extends Model
       "user_id",
    ];
 
-
    public function categories()
    {
-      return $this->belongsToMany(Category::class);
+      return $this->belongsToMany(Category::class, 'product_category');
    }
 }

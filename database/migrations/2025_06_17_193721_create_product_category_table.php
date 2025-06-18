@@ -11,17 +11,17 @@ return new class extends Migration {
    public function up(): void
    {
       Schema::create('product_category', function (Blueprint $table) {
-         $table->id();
          $table->foreignId('product_id')
             ->references("id")
             ->on('products')
-            ->cascadeOnDelete('null');
+            ->onDelete('cascade');
 
          $table->foreignId('category_id')
             ->references("id")
             ->on('categories')
-            ->cascadeOnDelete('null');
+            ->onDelete('cascade');
 
+         $table->primary(['product_id', 'category_id']);
          $table->timestamps();
       });
    }
