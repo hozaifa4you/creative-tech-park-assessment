@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
       Route::group(['prefix' => 'products'], function () {
          Route::get('/', [ProductController::class, 'index'])->name('dashboard.products');
          Route::get('create', [ProductController::class, 'create'])->name('dashboard.products.create');
+         Route::get('edit/{product}', [ProductController::class, 'edit'])->name('dashboard.products.edit');
+         Route::post('update', [ProductController::class, 'update'])->name('dashboard.products.update');
       });
 
 

@@ -13,7 +13,7 @@ class ProductController extends Controller
     */
    public function index()
    {
-      $products = Product::with('categories')->paginate(15);
+      $products = Product::with('categories')->paginate(20);
 
       return view('admin.products.products', compact('products'));
    }
@@ -47,9 +47,10 @@ class ProductController extends Controller
    /**
     * Show the form for editing the specified resource.
     */
-   public function edit(string $id)
+   public function edit(string $slug)
    {
-      //
+      $product = Product::where('slug', $slug)->firstOrFail();
+      return view('admin.products.edit', compact('product'));
    }
 
    /**

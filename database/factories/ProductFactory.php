@@ -18,6 +18,8 @@ class ProductFactory extends Factory
     */
    public function definition(): array
    {
+      $images = ['gm.png', 'gp.png', 'gpc.png', 'hpl.png', 'ip.png', 'iphone.png', 'mac.png', 'mk.png', 'nintendo.png', 'pc.png', 'sony.png', 'sw.png', 'tab.png', 'usb.png', 'whp.png', 'whp2.png', 'sw1.png', 'ws2.png'];
+
       return [
          'name' => $this->faker->words(2, true),
          'slug' => fn() => Str::slug($this->faker->unique()->words(2, true)),
@@ -26,7 +28,7 @@ class ProductFactory extends Factory
          'price' => $this->faker->numberBetween(100, 1000),
          'offer_price' => $this->faker->numberBetween(50, 900),
          'stock' => $this->faker->numberBetween(10, 100),
-         'image' => 'gm.png',
+         'image' => $this->faker->randomElement($images),
          'user_id' => 20,
       ];
    }
