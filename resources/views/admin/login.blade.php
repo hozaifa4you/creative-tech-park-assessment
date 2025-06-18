@@ -1,7 +1,7 @@
 <x-admin-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <p class="bg-red-50 text-red-500 text-sm text-center p-1 mb-2 font-medium rounded">Only Admin or Super Admin can
+    <p class="bg-sky-50 text-sky-500 text-sm text-center p-1 mb-2 font-medium rounded">Only Admin or Super Admin can
         login</p>
 
     <form method="POST" action="{{ route('dashboard.login.store') }}">
@@ -36,9 +36,9 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
+            @if (Route::has('admin.password.forgot'))
                 <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    href="{{ route('password.request') }}">
+                    href="{{ route('admin.password.forgot') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif

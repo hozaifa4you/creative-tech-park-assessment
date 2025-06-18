@@ -15,9 +15,8 @@ class AuthController extends Controller
    public function store(AdminLoginRequest $request)
    {
       $request->authenticate();
+      $request->session()->regenerate();
 
-      $session = $request->session()->regenerate();
-
-      return redirect()->intended(route('dashboard', absolute: false));
+      return redirect()->intended(route('dashboard.index', absolute: false));
    }
 }
