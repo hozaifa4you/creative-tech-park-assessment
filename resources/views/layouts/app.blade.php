@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@php
+    use App\Models\User;
+@endphp
 
 <head>
     <meta charset="utf-8">
@@ -21,7 +24,11 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation')
+        @if (Auth::user()->role->value === User::ADMIN)
+            @include('layouts.admin-navigation')
+        @else
+            @include('layouts.navigation')
+        @endif
 
         <!-- Page Heading -->
         @isset($header)
