@@ -86,9 +86,42 @@ class ProductController extends Controller
    /**
     * Update the specified resource in storage.
     */
-   public function update(Request $request, string $id)
+   public function update(Request $request, string $slug)
    {
-      //
+      $product = Product::where('slug', $slug)->firstOrFail();
+
+      $validated = $request->validate([
+         'name' => 'required|string|max:255',
+         'slug' => 'required|string|max:255',
+         'sku' => 'required|string|max:255',
+         'description' => 'nullable|string',
+         'price' => 'required|numeric|min:0',
+         'offer_price' => 'nullable|numeric|min:0',
+         'stock' => 'required|integer|min:0',
+         'categories' => 'required|string',
+         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      ]);
+
+
+      if ($request->hasFile('image')) {
+         if ($product->image && file_exists(public_path('uploads/products/' . $product->image))) {
+            unlink(public_path('uploads/products/' . $product->image));
+         }
+
+         $image = $request->file('image');
+         $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+         $image->move(public_path('uploads/products'), $imageName);
+         $validated['image'] = $imageName;
+      }
+
+      $product->update($validated);
+
+      $categoryIds = json_decode($request->categories);
+
+      $product->categories()->detach();
+      $product->categories()->attach($categoryIds);
+
+      return redirect()->route('dashboard.products')->with('success', 'Product updated successfully.');
    }
 
    /**

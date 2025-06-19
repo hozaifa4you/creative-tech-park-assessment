@@ -3,8 +3,8 @@
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header -->
             <div class="mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">Create New Product</h1>
-                <p class="mt-1 text-sm text-gray-600">Add a new product to your inventory with all the necessary details.
+                <h1 class="text-2xl font-bold text-gray-900">Edit Product</h1>
+                <p class="mt-1 text-sm text-gray-600">Update the product details in your inventory.
                 </p>
             </div>
 
@@ -20,9 +20,12 @@
 
             <!-- Form Container -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <form class="space-y-6 p-6" action="{{ route('dashboard.products.update', $product->id) }}"
+                <form class="space-y-6 p-6" action="{{ route('dashboard.products.update', $product->slug) }}"
                     method="POST" id="create-product-form" enctype="multipart/form-data">
                     @csrf
+
+                    <input hidden name="categories" id="categories" value="[]">
+
                     <!-- Basic Information Section -->
                     <div class="border-b border-gray-200 pb-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -52,8 +55,6 @@
                                     return $c->slug;
                                 });
                             @endphp
-
-                            <input hidden name="categories" value="{{ $ids }}" id="categories">
 
                             <!-- Slug -->
                             <div>
@@ -214,8 +215,8 @@
                     <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
                         <button type="submit"
                             class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 text-sm rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center">
-                            <i class="fas fa-plus mr-2 text-xs"></i>
-                            Create Product
+                            <i class="fas fa-pencil-alt mr-2 text-xs"></i>
+                            Update Product
                         </button>
 
                         <button type="button"
@@ -265,82 +266,86 @@
             const categoryOptions = document.querySelectorAll(".category-option");
             const categoryElement = document.getElementById("categories");
 
-            let selectedCategoryList = @json($preCategories); // slugs
-            let ids = @json($ids); // ids
+            const rawIds = @json($ids);
+            const rawCategoriesList = @json($preCategories);
+            const _categories = @json($categories);
 
-            console.log("Selected category slugs:", selectedCategoryList);
-            console.log("Selected category IDs:", ids);
+            let selectedCategoryList = rawCategoriesList ?? [];
+            let ids = JSON.parse(rawIds ?? "[]");
 
-            // ========== SHOW EXISTING SELECTED CATEGORIES ON LOAD ==========
-            document.addEventListener("DOMContentLoaded", function() {
-                selectedCategoryList.forEach((categorySlug) => {
-                    const categoryText = getCategoryTextBySlug(categorySlug);
-                    if (!categoryText) return;
+            // pre exist categories
+            document.addEventListener('DOMContentLoaded', function() {
+                categoryElement.value = JSON.stringify(ids);
 
-                    const chip = document.createElement("div");
-                    chip.className =
-                        "category-chip inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200";
-                    chip.innerHTML = `
-                    ${categoryText}
-                    <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" onclick="removeCategory('${categorySlug}', this)">
-                        <i class="fas fa-times text-xs"></i>
-                    </button>
-                `;
-                    chip.setAttribute("data-category", categorySlug);
-                    selectedCategories.appendChild(chip);
+                if (selectedCategoryList.length > 0) {
+                    selectedCategoryList.forEach(category => {
+                        const ctg = _categories.find(ctg => ctg.slug === category)
 
-                    const option = document.querySelector(`[data-category="${categorySlug}"]`);
-                    if (option) option.style.display = "none";
-                });
+                        const text = ctg.name;
+                        const slug = ctg.slug;
+                        const _id = ctg.id;
 
-                categoryElement.value = JSON.stringify(ids); // keep IDs in sync
-            });
+                        const chip = document.createElement("div");
+                        chip.className =
+                            "category-chip inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 capitalize";
+                        chip.innerHTML = `
+                        ${text}
+                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" onclick="removeCategory('${slug}', this, ${_id})">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    `;
+                        chip.setAttribute("data-category", 'categoryValue');
+                        selectedCategories.appendChild(chip);
+                    })
+                }
+            })
 
-            function getCategoryTextBySlug(slug) {
-                const el = document.querySelector(`.category-option[data-category="${slug}"]`);
-                return el?.textContent?.trim() ?? null;
-            }
-
-            // ========== FOCUS: Show dropdown ==========
+            // Show dropdown on focus
             categorySearch.addEventListener("focus", function() {
                 categoryDropdown.classList.add("show");
             });
 
-            // ========== CLICK OUTSIDE: Hide dropdown ==========
+            // Hide dropdown when clicking outside
             document.addEventListener("click", function(e) {
                 if (!e.target.closest(".relative")) {
                     categoryDropdown.classList.remove("show");
                 }
             });
 
-            // ========== SEARCH FILTER ==========
+            // Search functionality
             categorySearch.addEventListener("input", function() {
                 const searchTerm = this.value.toLowerCase();
                 categoryOptions.forEach((option) => {
                     const categoryText = option.textContent.toLowerCase();
-                    option.style.display = categoryText.includes(searchTerm) ? "flex" : "none";
+                    if (categoryText.includes(searchTerm)) {
+                        option.style.display = "flex";
+                    } else {
+                        option.style.display = "none";
+                    }
                 });
                 categoryDropdown.classList.add("show");
             });
 
-            // ========== SELECT CATEGORY ==========
+            // Category selection
             categoryOptions.forEach((option) => {
                 option.addEventListener("click", function() {
                     const categoryValue = this.getAttribute("data-category");
                     const id = this.getAttribute("data-id");
                     const categoryText = this.textContent.trim();
 
+                    // Check if category is already selected
                     if (!selectedCategoryList.includes(categoryValue)) {
                         selectedCategoryList.push(categoryValue);
-                        ids.push(id);
+                        ids.push(Number(id));
                         categoryElement.value = JSON.stringify(ids);
 
+                        // Create chip element
                         const chip = document.createElement("div");
                         chip.className =
                             "category-chip inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200";
                         chip.innerHTML = `
                         ${categoryText}
-                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" onclick="removeCategory('${categoryValue}', this)">
+                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" onclick="removeCategory('${categoryValue}', this, '${id}')">
                             <i class="fas fa-times text-xs"></i>
                         </button>
                     `;
@@ -348,41 +353,46 @@
 
                         selectedCategories.appendChild(chip);
 
-                        this.style.display = "none";
+                        // Hide the option
+                        // this.style.display = "none";
                     }
 
+                    // Clear search and hide dropdown
                     categorySearch.value = "";
                     categoryDropdown.classList.remove("show");
 
+                    // Reset all options visibility
                     categoryOptions.forEach((opt) => {
-                        if (!selectedCategoryList.includes(opt.getAttribute("data-category"))) {
+                        if (
+                            !selectedCategoryList.includes(opt.getAttribute("data-category"))
+                        ) {
                             opt.style.display = "flex";
                         }
                     });
                 });
             });
 
-            // ========== REMOVE CATEGORY ==========
-            function removeCategory(categoryValue, button) {
-                selectedCategoryList = selectedCategoryList.filter(cat => cat !== categoryValue);
+            // Remove category function
+            function removeCategory(categoryValue, button, id) {
+                // Remove from selected list
+                selectedCategoryList = selectedCategoryList.filter(
+                    (cat) => cat !== categoryValue
+                );
 
-                // Remove from IDs list as well
-                const option = document.querySelector(`.category-option[data-category="${categoryValue}"]`);
-                const id = option?.getAttribute("data-id");
-                ids = ids.filter(i => i != id);
+                ids = ids.filter((catId) => catId !== Number(id));
                 categoryElement.value = JSON.stringify(ids);
 
-                // Remove chip
+                // Remove chip element
                 button.closest(".category-chip").remove();
 
-                // Show dropdown option again
+                // Show the option again
+                const option = document.querySelector(`[data-category="${categoryValue}"]`);
                 if (option && option.classList.contains("category-option")) {
                     option.style.display = "flex";
                 }
             }
         </script>
     @endsection
-
 
     @section('css')
         <link rel="stylesheet" href="@vite(['resources/css/select.css'])">
