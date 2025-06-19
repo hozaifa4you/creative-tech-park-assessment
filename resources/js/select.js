@@ -8,6 +8,8 @@ const categoryElement = document.getElementById("categories");
 let selectedCategoryList = [];
 let ids = [];
 
+console.log(ids, selectedCategoryList);
+
 // Show dropdown on focus
 categorySearch.addEventListener("focus", function () {
    categoryDropdown.classList.add("show");

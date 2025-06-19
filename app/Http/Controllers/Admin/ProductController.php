@@ -70,20 +70,17 @@ class ProductController extends Controller
    }
 
    /**
-    * Display the specified resource.
-    */
-   public function show(string $id)
-   {
-      //
-   }
-
-   /**
     * Show the form for editing the specified resource.
     */
    public function edit(string $slug)
    {
-      $product = Product::where('slug', $slug)->firstOrFail();
-      return view('admin.products.edit', compact('product'));
+      $product = Product::where('slug', $slug)
+         ->with('categories')
+         ->firstOrFail();
+
+      $categories = Category::all();
+
+      return view('admin.products.edit', compact('product', 'categories'));
    }
 
    /**
