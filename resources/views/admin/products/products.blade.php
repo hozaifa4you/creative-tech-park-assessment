@@ -5,7 +5,7 @@
                 <div class="flex items-center md:justify-between p-3">
                     <h4 class="text-3xl font-semibold">Products</h4>
                     <a href="{{ route('dashboard.products.create') }}"
-                        class="bg-accent text-white px-3 py-2 rounded">Create</a>
+                        class="bg-accent text-white px-3 py-1.5 rounded font-semibold">Create</a>
                 </div>
 
                 <div class="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
@@ -20,7 +20,7 @@
                         @endphp
 
                         <x-home.flash-deal-card :id="$product->id" :slug="$product->slug" :name="$product->name" :discount="$discount"
-                            :offerPrice="$product->offer_price" :price="$product->price" :reviewCount="rand(1, 100)" :image="$product->image" />
+                            :offerPrice="$product->offer_price" :price="$product->price" :reviewCount="rand(1, 100)" :image="$product->image" :stock="$product->stock" />
                     @empty
                         <div class="col-span-full text-center text-gray-500">
                             No products found.
