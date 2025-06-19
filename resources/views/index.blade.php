@@ -9,10 +9,10 @@
     <x-home.categories />
 
     {{-- Flash Deal --}}
-    <x-home.flash-deal />
+    <x-home.flash-deal :deals="$flash_deals" />
 
     {{-- Best Seller --}}
-    <x-home.best-seller />
+    <x-home.best-seller :sellers="$best_sellers" />
 
     {{-- Brand Showcase --}}
     <x-home.brand-showcase />
