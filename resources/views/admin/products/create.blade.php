@@ -36,7 +36,7 @@
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
                                     Product Name <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="name" name="name"
+                                <input type="text" id="name" name="name" value="{{ old('name') }}"
                                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
                                     placeholder="Enter product name" required>
                             </div>
@@ -48,7 +48,7 @@
                                 <label for="slug" class="block text-sm font-medium text-gray-700 mb-1">
                                     URL Slug <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="slug" name="slug"
+                                <input type="text" id="slug" name="slug" value="{{ old('slug') }}"
                                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
                                     placeholder="product-url-slug" required>
                                 <p class="mt-1 text-xs text-gray-500">Used in product URL (lowercase, no spaces)</p>
@@ -59,7 +59,7 @@
                                 <label for="sku" class="block text-sm font-medium text-gray-700 mb-1">
                                     SKU <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="sku" name="sku"
+                                <input type="text" id="sku" name="sku" value="{{ old('sku') }}"
                                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
                                     placeholder="PROD-001" required>
                                 <p class="mt-1 text-xs text-gray-500">Stock Keeping Unit (unique identifier)</p>
@@ -110,7 +110,7 @@
                             </label>
                             <textarea id="description" name="description" rows="3"
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400 resize-none"
-                                placeholder="Enter detailed product description..."></textarea>
+                                placeholder="Enter detailed product description...">{{ old('description') }}</textarea>
                         </div>
                     </div>
 
@@ -131,7 +131,8 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500 text-sm">$</span>
                                     </div>
-                                    <input type="number" id="price" name="price" step="0.01" min="0"
+                                    <input type="number" id="price" name="price" value="{{ old('price') }}"
+                                        step="0.01" min="0"
                                         class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                                         placeholder="0.00" required>
                                 </div>
@@ -146,8 +147,8 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500 text-sm">$</span>
                                     </div>
-                                    <input type="number" id="offer_price" name="offer_price" step="0.01"
-                                        min="0"
+                                    <input type="number" id="offer_price" name="offer_price"
+                                        value="{{ old('offer_price') }}" step="0.01" min="0"
                                         class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                                         placeholder="0.00">
                                 </div>
@@ -159,7 +160,8 @@
                                 <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">
                                     Stock Quantity <span class="text-red-500">*</span>
                                 </label>
-                                <input type="number" id="stock" name="stock" min="0"
+                                <input type="number" id="stock" name="stock" value="{{ old('stock') }}"
+                                    min="0"
                                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                                     placeholder="0" required>
                             </div>

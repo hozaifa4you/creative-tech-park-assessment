@@ -18,6 +18,12 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="bg-red-100 text-red-700 p-2 rounded mb-4">
+                    <p class="text-sm font-semibold">{{ session('error') }}</p>
+                </div>
+            @endif
+
             <!-- Form Container -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <form class="space-y-6 p-6" action="{{ route('dashboard.products.update', $product->slug) }}"

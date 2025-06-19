@@ -4,13 +4,13 @@
             <!-- Header -->
             <div class="mb-6">
                 <div class="flex items-center space-x-3 mb-2">
-                    <a href="{{ route('dashboard.categories') }}"
+                    <a href="{{ route('dashboard.categories.update', $category->slug) }}"
                         class="text-gray-400 hover:text-gray-600 transition duration-200">
                         <i class="fas fa-arrow-left text-lg"></i>
                     </a>
-                    <h1 class="text-2xl font-bold text-gray-900">Create New Category</h1>
+                    <h1 class="text-2xl font-bold text-gray-900">Edit Category</h1>
                 </div>
-                <p class="text-sm text-gray-600">Add a new category to organize your products effectively.</p>
+                <p class="text-sm text-gray-600">Update the details of this category.</p>
             </div>
 
             @if ($errors->any())
@@ -24,16 +24,23 @@
                 </div>
             @endif
 
+            @session('error')
+                <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md mb-4">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endsession
+
             <!-- Form Container -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <form class="space-y-6 p-6" method="POST" action="{{ route('dashboard.categories.store') }}">
+                <form class="space-y-6 p-6" method="POST"
+                    action="{{ route('dashboard.categories.update', $category->slug) }}">
                     @csrf
                     <!-- Category Name -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                             Category Name <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}"
+                        <input type="text" id="name" name="name" value="{{ $category->name }}"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
                             placeholder="Enter category name" required maxlength="100"
                             oninput="updateSlug(); updateCharCount('name')">
@@ -49,7 +56,7 @@
                             URL Slug <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="text" id="slug" name="slug" value="{{ old('slug') }}"
+                            <input type="text" id="slug" name="slug" value="{{ $category->slug }}"
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400 font-mono"
                                 placeholder="category-url-slug" required maxlength="100"
                                 pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$" oninput="validateSlug(); updateCharCount('slug')">
@@ -74,7 +81,7 @@
                         <textarea id="description" name="description" rows="4"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400 resize-none"
                             placeholder="Enter a detailed description of this category..." maxlength="500"
-                            oninput="updateCharCount('description')">{{ old('description') }}</textarea>
+                            oninput="updateCharCount('description')">{{ $category->description }}</textarea>
                         <div class="flex justify-between items-center mt-1">
                             <p class="text-xs text-gray-500">Describe what products belong in this category</p>
 
@@ -85,8 +92,8 @@
                     <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
                         <button type="submit"
                             class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 text-sm rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center">
-                            <i class="fas fa-plus mr-2 text-xs"></i>
-                            Create Category
+                            <i class="fas fa-pencil-alt mr-2 text-xs"></i>
+                            Update Category
                         </button>
 
                         <button type="button"

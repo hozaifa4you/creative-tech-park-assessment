@@ -39,7 +39,14 @@ class ProductController extends Controller
    {
       $validated = $request->validate([
          'name' => 'required|string|max:255',
-         'slug' => 'required|string|max:255|unique:products,slug',
+         'slug' => [
+            'required',
+            'string',
+            'min:3',
+            'max:255',
+            'unique:products,slug',
+            'regex:/^[a-zA-Z0-9\-]+$/'
+         ],
          'sku' => 'required|string|max:255|unique:products,sku',
          'description' => 'nullable|string',
          'price' => 'required|numeric|min:0',
@@ -92,7 +99,13 @@ class ProductController extends Controller
 
       $validated = $request->validate([
          'name' => 'required|string|max:255',
-         'slug' => 'required|string|max:255',
+         'slug' => [
+            'required',
+            'string',
+            'min:3',
+            'max:255',
+            'regex:/^[a-zA-Z0-9\-]+$/'
+         ],
          'sku' => 'required|string|max:255',
          'description' => 'nullable|string',
          'price' => 'required|numeric|min:0',
@@ -101,6 +114,14 @@ class ProductController extends Controller
          'categories' => 'required|string',
          'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       ]);
+
+      $existingProduct = Product::where('slug', $validated['slug'])
+         ->where('id', '!=', $product->id)
+         ->first();
+
+      if ($existingProduct) {
+         return redirect()->back()->with('error', 'Product with this slug already exists.');
+      }
 
 
       if ($request->hasFile('image')) {
