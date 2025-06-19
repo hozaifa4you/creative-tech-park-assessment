@@ -102,6 +102,14 @@ class CategoryController extends Controller
     */
    public function destroy(string $id)
    {
-      //
+      $category = Category::findOrFail($id);
+
+      // Detach all products associated with this category
+      $category->products()->detach();
+
+      // Delete the category
+      $category->delete();
+
+      return redirect()->route('dashboard.categories')->with('success', 'Category deleted successfully.');
    }
 }

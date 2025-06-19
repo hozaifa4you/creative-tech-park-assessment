@@ -132,10 +132,50 @@
                                                     <i class="fas fa-eye text-sm"></i>
                                                 </a>
                                                 <button
+                                                    onclick="document.getElementById('deleteModal').classList.remove('hidden')"
                                                     class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
                                                     title="Delete">
                                                     <i class="fas fa-trash text-sm"></i>
                                                 </button>
+
+                                                <div id="deleteModal"
+                                                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                                                    <div
+                                                        class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative flex flex-col  items-start">
+
+                                                        <!-- Close Button -->
+                                                        <button
+                                                            onclick="document.getElementById('deleteModal').classList.add('hidden')"
+                                                            class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl font-bold">
+                                                            &times;
+                                                        </button>
+
+                                                        <!-- Modal Content -->
+                                                        <h2 class="text-lg font-semibold text-gray-800 mb-3">Confirm
+                                                            Deletion</h2>
+                                                        <p class="text-gray-600 mb-6">Are you sure delete the category?
+                                                        </p>
+
+                                                        <!-- Action Buttons -->
+                                                        <div class="flex justify-end space-x-3">
+                                                            <button
+                                                                onclick="document.getElementById('deleteModal').classList.add('hidden')"
+                                                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">
+                                                                Cancel
+                                                            </button>
+
+                                                            <form method="POST"
+                                                                action="{{ route('dashboard.categories.destroy', $category->id) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                                                                    Yes, Delete
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
