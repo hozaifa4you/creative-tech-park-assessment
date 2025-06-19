@@ -13,7 +13,7 @@ class CategoryController extends Controller
     */
    public function index()
    {
-      $categories = Category::withCount('products')->paginate(10);
+      $categories = Category::withCount('products')->orderBy('created_at', 'desc')->paginate(10);
 
       return view('admin.categories.categories', compact('categories'));
    }
@@ -23,7 +23,7 @@ class CategoryController extends Controller
     */
    public function create()
    {
-      //
+      return view('admin.categories.create');
    }
 
    /**
@@ -31,7 +31,16 @@ class CategoryController extends Controller
     */
    public function store(Request $request)
    {
-      //
+      $validated = $request->validate([
+         'name' => 'required|string|max:100',
+         'slug' => 'required|string|max:100|unique:categories,slug',
+         'description' => 'nullable|string|max:500',
+      ]);
+
+
+      Category::create($validated);
+
+      return redirect()->route('dashboard.categories')->with('success', 'Category created successfully.');
    }
 
    /**

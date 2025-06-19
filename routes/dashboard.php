@@ -46,7 +46,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
       });
 
       Route::group(['prefix' => 'categories'], function () {
-         Route::get('/', [CategoryController::class, 'index'])->name("dashboard.categories");
+         Route::get('/', [CategoryController::class, 'index'])
+            ->name("dashboard.categories");
+
+         Route::get('show/{slug}', [CategoryController::class, 'show'])
+            ->name('dashboard.categories.show');
+
+         Route::get('create', [CategoryController::class, 'create'])
+            ->name('dashboard.categories.create');
+         Route::post('store', [CategoryController::class, 'store'])
+            ->name('dashboard.categories.store');
+
+         Route::get('edit/{slug}', [CategoryController::class, 'edit'])
+            ->name('dashboard.categories.edit');
+         Route::post('update/{slug}', [CategoryController::class, 'update'])
+            ->name('dashboard.categories.update');
+
+         Route::delete('delete/{id}', [CategoryController::class, 'destroy'])
+            ->name('dashboard.categories.destroy');
       });
    });
 });

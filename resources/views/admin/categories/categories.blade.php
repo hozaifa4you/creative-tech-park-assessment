@@ -10,14 +10,32 @@
                             <p class="mt-1 text-sm text-gray-600">Manage your product categories and their details</p>
                         </div>
                         <div class="mt-4 sm:mt-0">
-                            <button
+                            <a href="{{ route('dashboard.categories.create') }}"
                                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center">
                                 <i class="fas fa-plus mr-2 text-sm"></i>
                                 Add Category
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
+
+                @session('success')
+                    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-green-700">
+                                    {{ session('success') }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endsession
+
+
+
 
                 <!-- Categories Table -->
                 <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
@@ -103,16 +121,16 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex items-center justify-end space-x-2">
-                                                <button
+                                                <a href="{{ route('dashboard.categories.edit', $category->slug) }}"
                                                     class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                                                     title="Edit">
                                                     <i class="fas fa-edit text-sm"></i>
-                                                </button>
-                                                <button
+                                                </a>
+                                                <a href="{{ route('dashboard.categories.show', $category->slug) }}"
                                                     class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50"
                                                     title="View Products">
                                                     <i class="fas fa-eye text-sm"></i>
-                                                </button>
+                                                </a>
                                                 <button
                                                     class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
                                                     title="Delete">
