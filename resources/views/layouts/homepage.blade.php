@@ -17,10 +17,13 @@
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('css')
 </head>
 
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] font-sans antialiased">
     {{ $slot }}
+
+    @yield('scripts')
 </body>
 
 </html>
