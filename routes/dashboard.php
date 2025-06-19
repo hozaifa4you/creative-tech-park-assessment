@@ -29,7 +29,7 @@ Route::middleware('guest')->group(function () {
    });
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
    Route::group(['prefix' => 'dashboard'], function () {
       Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
