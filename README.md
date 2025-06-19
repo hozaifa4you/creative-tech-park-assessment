@@ -13,14 +13,31 @@ Pre interview assessment for the Creative Tech Park.
    -  Node.js and npm
    -  MySQL
 
-3. Install the required dependencies by running:
+3. Create a `.env` file in the root directory of the project by copying the `.env.example` file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Update the `.env` file with your database credentials and other environment variables:
+
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=your_database_name
+   DB_USERNAME=your_database_user
+   DB_PASSWORD=your_database_password
+   ```
+
+4. Install the required dependencies by running:
 
    ```bash
    composer install
    npm install
    ```
 
-4. Migrations:
+5. Migrations:
 
    -  Run the migrations to set up the database schema:
 
@@ -28,13 +45,13 @@ Pre interview assessment for the Creative Tech Park.
    php artisan migrate
    ```
 
-5. Seed the database with sample data:
+6. Seed the database with sample data:
 
    ```bash
    php artisan db:seed
    ```
 
-6. Start the development server:
+7. Start the development server:
 
    ```bash
    composer run dev
