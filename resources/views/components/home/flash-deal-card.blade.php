@@ -1,6 +1,6 @@
 <div class="bg-white rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition duration-300 group">
     <div class="relative ">
-        <img src="{{ asset('assets/images/' . $image) }}" alt="Product"
+        <img src="{{ asset('uploads/products/' . $image) }}" alt="Product"
             class="w-full h-20 md:h-24 object-contain rounded mb-2">
         <span class="absolute top-1 left-1 bg-red-500 text-white px-1 py-0.5 text-xs rounded">-{{ $discount }}</span>
     </div>
@@ -16,7 +16,7 @@
         ★★★★☆ <span class="text-gray-500 ml-1 text-xs">({{ $reviewCount }})</span>
     </div>
 
-    @if (Auth::user()->role->value === 'admin')
+    @if ($role && $role === 'admin')
         <div class="flex items-center justify-between mt-2">
             <div class="flex items-center gap-x-2">
                 <a class="text-xs bg-accent text-white p-1 font-semibold rounded"

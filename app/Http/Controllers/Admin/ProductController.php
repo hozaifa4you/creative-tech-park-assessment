@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class ProductController extends Controller
     */
    public function index()
    {
-      $products = Product::with('categories')->paginate(20);
+      $products = Product::with('categories')
+         ->orderBy('created_at', 'desc')
+         ->paginate(20);
 
       return view('admin.products.products', compact('products'));
    }
@@ -25,7 +28,8 @@ class ProductController extends Controller
     */
    public function create()
    {
-      return view('admin.products.create');
+      $categories = Category::all();
+      return view('admin.products.create', compact('categories'));
    }
 
    /**
@@ -33,7 +37,36 @@ class ProductController extends Controller
     */
    public function store(Request $request)
    {
-      //
+      $validated = $request->validate([
+         'name' => 'required|string|max:255',
+         'slug' => 'required|string|max:255|unique:products,slug',
+         'sku' => 'required|string|max:255|unique:products,sku',
+         'description' => 'nullable|string',
+         'price' => 'required|numeric|min:0',
+         'offer_price' => 'nullable|numeric|min:0',
+         'stock' => 'required|integer|min:0',
+         'categories' => 'required|string',
+         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      ]);
+
+      if ($request->hasFile('image')) {
+         $image = $request->file('image');
+         $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+         $image->move(public_path('uploads/products'), $imageName);
+         $validated['image'] = $imageName;
+      }
+
+      $user = auth()->user();
+      $validated['user_id'] = $user->id;
+
+      $product = Product::create($validated);
+
+      $categoryIds = json_decode($request->categories);
+      $categoryIds = array_map('intval', $categoryIds);
+
+      $product->categories()->attach($categoryIds);
+
+      return redirect()->route('dashboard.products')->with('success', 'Product created successfully.');
    }
 
    /**

@@ -8,6 +8,12 @@
                         class="bg-accent text-white px-3 py-1.5 rounded font-semibold">Create</a>
                 </div>
 
+                @session('success')
+                    <div class="bg-green-100 text-green-700 p-2 rounded mb-4 mx-2">
+                        {{ session('success') }}
+                    </div>
+                @endsession
+
                 <div class="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
                     @forelse ($products as $product)
                         @php
@@ -20,7 +26,8 @@
                         @endphp
 
                         <x-home.flash-deal-card :id="$product->id" :slug="$product->slug" :name="$product->name" :discount="$discount"
-                            :offerPrice="$product->offer_price" :price="$product->price" :reviewCount="rand(1, 100)" :image="$product->image" :stock="$product->stock" />
+                            :offerPrice="$product->offer_price" :price="$product->price" :reviewCount="rand(1, 100)" :image="$product->image" :stock="$product->stock"
+                            :role="Auth::user()->role->value" />
                     @empty
                         <div class="col-span-full text-center text-gray-500">
                             No products found.

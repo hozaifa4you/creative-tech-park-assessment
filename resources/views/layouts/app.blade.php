@@ -20,6 +20,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('css')
 </head>
 
 <body class="font-sans antialiased">
@@ -44,6 +45,8 @@
             {{ $slot }}
         </main>
     </div>
+
+    @yield('scripts')
 </body>
 
 </html>
