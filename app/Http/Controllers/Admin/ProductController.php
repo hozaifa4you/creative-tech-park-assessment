@@ -97,8 +97,15 @@ class ProductController extends Controller
    /**
     * Remove the specified resource from storage.
     */
-   public function destroy(string $id)
+   public function destroy(int $id)
    {
-      //
+      $product = Product::where('id', $id)->firstOrFail();
+
+      if ($product->image && file_exists(public_path('uploads/products/' . $product->image))) {
+         unlink(public_path('uploads/products/' . $product->image));
+      }
+
+      $product->delete();
+      return redirect()->route('dashboard.products')->with('success', 'Product Successfully deleted');
    }
 }

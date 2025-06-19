@@ -22,8 +22,9 @@
                 <a class="text-xs bg-accent text-white p-1 font-semibold rounded"
                     href="{{ route('dashboard.products.edit', $slug ?? 'foo') }}" title="Edit the product"><i
                         class="fa-solid fa-pen-to-square"></i></a>
-                <a title="Delete the product" class="text-xs bg-red-50 text-red-500 p-1 font-semibold rounded"><i
-                        class="fa-solid fa-trash"></i></a>
+                <button onclick="document.getElementById('deleteModal').classList.remove('hidden')"
+                    title="Delete the product" class="text-xs bg-red-50 text-red-500 p-1 font-semibold rounded"><i
+                        class="fa-solid fa-trash"></i></button>
             </div>
 
             <span
@@ -31,4 +32,36 @@
                 {{ $stock ?? 0 }}</span>
         </div>
     @endif
+</div>
+
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
+
+        <!-- Close Button -->
+        <button onclick="document.getElementById('deleteModal').classList.add('hidden')"
+            class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl font-bold">
+            &times;
+        </button>
+
+        <!-- Modal Content -->
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">Confirm Deletion</h2>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete this product? This action cannot be undone.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-3">
+            <button onclick="document.getElementById('deleteModal').classList.add('hidden')"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">
+                Cancel
+            </button>
+
+            <form method="POST" action="{{ route('dashboard.products.destroy', $id) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    Yes, Delete
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

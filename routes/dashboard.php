@@ -41,8 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
          Route::get('edit/{product}', [ProductController::class, 'edit'])->name('dashboard.products.edit');
          Route::post('update', [ProductController::class, 'update'])->name('dashboard.products.update');
-      });
 
+         Route::delete('delete/{id}', [ProductController::class, 'destroy'])->name('dashboard.products.destroy');
+      });
 
       Route::group(['prefix' => 'categories'], function () {
          Route::get('/', [CategoryController::class, 'index'])->name("dashboard.categories");
